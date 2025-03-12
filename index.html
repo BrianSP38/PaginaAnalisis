@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisis de Algoritmos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .menu {
+            background: #007bff;
+            padding: 15px;
+        }
+        .menu button {
+            background: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        .menu button:hover {
+            background: #ddd;
+        }
+        #pdfViewer {
+            width: 80%;
+            height: 500px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu">
+        <button onclick="loadPDF('Caballo.pdf')">Caballo</button>
+        <button onclick="loadPDF('Algoritmos.pdf')">Algoritmos</button>
+        <button onclick="loadPDF('AHA.pdf')">AHA</button>
+        <button onclick="loadPDF('Hormigas.pdf')">Hormigas</button>
+        <button onclick="loadPDF('ParcialA.pdf')">Parcial</button>
+    </div>
+    <iframe id="pdfViewer" src="pdf1.pdf"></iframe>
+    
+    <script>
+        function loadPDF(pdf) {
+            document.getElementById('pdfViewer').src = pdf;
+        }
+    </script>
+</body>
+</html>
