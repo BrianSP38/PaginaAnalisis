@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mochila - Método Greedy</title>
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #666;
+        }
+        .section {
+            background: #ffffff;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 850px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 90%;
+            margin: 10px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #eeeeee;
+        }
+        button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output1, #output2 {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .input-group input {
+            padding: 10px;
+            margin: 5px;
+            font-size: 14px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Problema de la Mochila</h1>
+
+    <div class="section">
+        <h2>Ejemplo predeterminado</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Artículo</th>
+                    <th>Valor ($)</th>
+                    <th>Peso (kg)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Guitarra 🎸</td><td>1500</td><td>1</td></tr>
+                <tr><td>Laptop 💻</td><td>2000</td><td>3</td></tr>
+                <tr><td>Radio 📻</td><td>3000</td><td>4</td></tr>
+                <tr><td>Teléfono 📱</td><td>2000</td><td>1</td></tr>
+                <tr><td>Anillo 💍</td><td>2500</td><td>0.5</td></tr>
+            </tbody>
+        </table>
+        <button onclick="calcularMochilaEjemplo()">Resolver ejemplo</button>
+        <p id="output1"></p>
+    </div>
+
+    <div class="section">
+        <h2>Agrega tus propios artículos</h2>
+        <table id="tablaPersonalizada">
+            <thead>
+                <tr>
+                    <th>Artículo</th>
+                    <th>Valor ($)</th>
+                    <th>Peso (kg)</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <div class="input-group">
+            <input type="text" id="nombreItem" placeholder="Nombre del artículo">
+            <input type="number" id="valorItem" placeholder="Valor ($)">
+            <input type="number" id="pesoItem" placeholder="Peso (kg)" step="0.1">
+            <button onclick="añadirItem()">Añadir</button>
+        </div>
+
+        <button onclick="resolverMochilaPersonalizada()">Calcular mejor combinación</button>
+
+        <p id="output2"></p>
+    </div>
+
+    <script>
+        function algoritmoGreedy(items, limitePeso) {
+            items.sort((a, b) => (b.valor / b.peso) - (a.valor / a.peso));
+
+            let pesoAcumulado = 0;
+            let valorAcumulado = 0;
+            let seleccion = [];
+
+            for (let item of items) {
+                if (pesoAcumulado + item.peso <= limitePeso) {
+                    seleccion.push(item);
+                    pesoAcumulado += item.peso;
+                    valorAcumulado += item.valor;
+                }
+            }
+
+            return { valorTotal: valorAcumulado, pesoTotal: pesoAcumulado, seleccionados: seleccion };
+        }
+
+        function calcularMochilaEjemplo() {
+            const capacidad = 10;
+            const articulos = [
+                { nombre: "Guitarra 🎸", valor: 1500, peso: 1 },
+                { nombre: "Laptop 💻", valor: 2000, peso: 3 },
+                { nombre: "Radio 📻", valor: 3000, peso: 4 },
+                { nombre: "Teléfono 📱", valor: 2000, peso: 1 },
+                { nombre: "Anillo 💍", valor: 2500, peso: 0.5 }
+            ];
+
+            const resultado = algoritmoGreedy(articulos, capacidad);
+
+            document.getElementById("output1").innerHTML = `
+                <strong>Solución:</strong> Llevar: 
+                ${resultado.seleccionados.map(i => i.nombre).join(", ")}<br>
+                ➡ Valor total: $${resultado.valorTotal} (Peso total: ${resultado.pesoTotal}kg).
+            `;
+        }
+
+        const listaPersonalizada = [];
+        const limiteMochila = 10;
+
+        function añadirItem() {
+            const nombre = document.getElementById("nombreItem").value;
+            const valor = parseFloat(document.getElementById("valorItem").value);
+            const peso = parseFloat(document.getElementById("pesoItem").value);
+
+            if (!nombre || isNaN(valor) || isNaN(peso) || valor <= 0 || peso <= 0) {
+                alert("Por favor ingrese todos los datos correctamente.");
+                return;
+            }
+
+            listaPersonalizada.push({ nombre, valor, peso });
+
+            const tabla = document.getElementById("tablaPersonalizada").querySelector('tbody');
+            const fila = tabla.insertRow();
+            fila.insertCell(0).textContent = nombre;
+            fila.insertCell(1).textContent = valor;
+            fila.insertCell(2).textContent = peso;
+
+            document.getElementById("nombreItem").value = "";
+            document.getElementById("valorItem").value = "";
+            document.getElementById("pesoItem").value = "";
+        }
+
+        function resolverMochilaPersonalizada() {
+            const resultado = algoritmoGreedy(listaPersonalizada, limiteMochila);
+
+            document.getElementById("output2").innerHTML = `
+                <strong>Solución:</strong> Llevar: 
+                ${resultado.seleccionados.map(i => i.nombre).join(", ")}<br>
+                ➡ Valor total: $${resultado.valorTotal} (Peso total: ${resultado.pesoTotal}kg).
+            `;
+        }
+    </script>
+
+</body>
+</html>
