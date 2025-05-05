@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicios JS Interactivos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .ejercicio {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        h3 {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ejercicios Interactivos en JavaScript</h1>
+
+    <div class="ejercicio">
+        <h3>1. Suma de dos números</h3>
+        <input type="number" id="sumaA"> +
+        <input type="number" id="sumaB">
+        <button onclick="suma()">Calcular</button>
+        <p id="resultado1"></p>
+    </div>
+
+    <div class="ejercicio">
+        <h3>2. ¿Par o impar?</h3>
+        <input type="number" id="parImpar">
+        <button onclick="parImpar()">Verificar</button>
+        <p id="resultado2"></p>
+    </div>
+
+    <div class="ejercicio">
+        <h3>3. Factorial</h3>
+        <input type="number" id="factorialN">
+        <button onclick="factorial()">Calcular</button>
+        <p id="resultado3"></p>
+    </div>
+
+    <div class="ejercicio">
+        <h3>4. ¿Es primo?</h3>
+        <input type="number" id="primoN">
+        <button onclick="esPrimo()">Verificar</button>
+        <p id="resultado4"></p>
+    </div>
+
+    <div class="ejercicio">
+        <h3>5. Secuencia de Fibonacci</h3>
+        <input type="number" id="fiboN" placeholder="Cantidad de términos">
+        <button onclick="fibonacci()">Generar</button>
+        <p id="resultado5"></p>
+    </div>
+
+    <div class="ejercicio">
+        <h3>6. Invertir cadena</h3>
+        <input type="text" id="cadena">
+        <button onclick="invertirCadena()">Invertir</button>
+        <p id="resultado6"></p>
+    </div>
+
+    <div class="ejercicio">
+        <h3>7. Contar vocales</h3>
+        <input type="text" id="vocalesTexto">
+        <button onclick="contarVocales()">Contar</button>
+        <p id="resultado7"></p>
+    </div>
+
+    <div class="ejercicio">
+        <h3>8. Números del 1 al 10</h3>
+        <button onclick="unoADiez()">Mostrar</button>
+        <p id="resultado8"></p>
+    </div>
+
+    <div class="ejercicio">
+        <h3>9. Potencia</h3>
+        <input type="number" id="base"> ^
+        <input type="number" id="exponente">
+        <button onclick="potencia()">Calcular</button>
+        <p id="resultado9"></p>
+    </div>
+
+    <div class="ejercicio">
+        <h3>10. Suma de elementos de un arreglo</h3>
+        <input type="text" id="arreglo" placeholder="Ej: 1,2,3,4">
+        <button onclick="sumaArreglo()">Sumar</button>
+        <p id="resultado10"></p>
+    </div>
+
+    <script>
+        function suma() {
+            const a = parseFloat(document.getElementById("sumaA").value);
+            const b = parseFloat(document.getElementById("sumaB").value);
+            document.getElementById("resultado1").textContent = `Resultado: ${a + b}`;
+        }
+
+        function parImpar() {
+            const n = parseInt(document.getElementById("parImpar").value);
+            document.getElementById("resultado2").textContent = n % 2 === 0 ? "Es par" : "Es impar";
+        }
+
+        function factorial() {
+            let n = parseInt(document.getElementById("factorialN").value);
+            let result = 1;
+            for (let i = 2; i <= n; i++) result *= i;
+            document.getElementById("resultado3").textContent = `Resultado: ${result}`;
+        }
+
+        function esPrimo() {
+            const n = parseInt(document.getElementById("primoN").value);
+            if (n <= 1) {
+                document.getElementById("resultado4").textContent = "No es primo";
+                return;
+            }
+            for (let i = 2; i <= Math.sqrt(n); i++) {
+                if (n % i === 0) {
+                    document.getElementById("resultado4").textContent = "No es primo";
+                    return;
+                }
+            }
+            document.getElementById("resultado4").textContent = "Es primo";
+        }
+
+        function fibonacci() {
+            let n = parseInt(document.getElementById("fiboN").value);
+            let secuencia = [0, 1];
+            for (let i = 2; i < n; i++) {
+                secuencia.push(secuencia[i - 1] + secuencia[i - 2]);
+            }
+            document.getElementById("resultado5").textContent = secuencia.slice(0, n).join(", ");
+        }
+
+        function invertirCadena() {
+            const str = document.getElementById("cadena").value;
+            document.getElementById("resultado6").textContent = str.split('').reverse().join('');
+        }
+
+        function contarVocales() {
+            const texto = document.getElementById("vocalesTexto").value;
+            const conteo = (texto.match(/[aeiouáéíóú]/gi) || []).length;
+            document.getElementById("resultado7").textContent = `Número de vocales: ${conteo}`;
+        }
+
+        function unoADiez() {
+            let res = '';
+            for (let i = 1; i <= 10; i++) res += i + ' ';
+            document.getElementById("resultado8").textContent = res.trim();
+        }
+
+        function potencia() {
+            const base = parseFloat(document.getElementById("base").value);
+            const exp = parseFloat(document.getElementById("exponente").value);
+            document.getElementById("resultado9").textContent = `Resultado: ${base ** exp}`;
+        }
+
+        function sumaArreglo() {
+            const entrada = document.getElementById("arreglo").value;
+            const arr = entrada.split(',').map(Number);
+            const suma = arr.reduce((acc, val) => acc + val, 0);
+            document.getElementById("resultado10").textContent = `Suma: ${suma}`;
+        }
+    </script>
+</body>
+</html>
